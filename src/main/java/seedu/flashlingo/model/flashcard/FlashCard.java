@@ -5,10 +5,14 @@ package seedu.flashlingo.model.flashcard;
 import static seedu.flashlingo.commons.util.AppUtil.checkArgument;
 import static seedu.flashlingo.logic.Messages.MESSAGE_SAME_WORD;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import seedu.flashlingo.model.flashcard.words.OriginalWord;
 import seedu.flashlingo.model.flashcard.words.TranslatedWord;
+import seedu.flashlingo.model.tag.Tag;
 
 /**
  * Represents each flashcard
@@ -24,6 +28,8 @@ public class FlashCard {
     private ProficiencyLevel currentLevel; // How many times successfully remembered
     private boolean isRemembered; //if successfully remembers word
     private boolean isRevealed = false;
+
+    private final Set<Tag> tags = new HashSet<>();
     /**
      * Constructor for Flashcard
      *
@@ -58,6 +64,26 @@ public class FlashCard {
         this.originalWord = originalWord;
         this.isRemembered = isRemembered;
     }
+
+    /**
+     * Constructor for Flashcard
+     *
+     * @param originalWord   The word in the original language
+     * @param translatedWord The word in the language you are learning
+     * @param whenToReview   The date of when you need to review this word
+     * @param level          The level of familiarity with the word
+     * @param isRemembered   Whether the word was remembered
+     * @param tags Tags for this flash card
+     */
+    public FlashCard(OriginalWord originalWord, TranslatedWord translatedWord, Date whenToReview,
+                     ProficiencyLevel level, boolean isRemembered, Set<Tag> tags) {
+        this.currentLevel = level;
+        this.whenToReview = whenToReview;
+        this.translatedWord = translatedWord;
+        this.originalWord = originalWord;
+        this.isRemembered = isRemembered;
+        this.tags.addAll(tags);
+    }
     public OriginalWord getOriginalWord() {
         return originalWord;
     }
@@ -85,9 +111,40 @@ public class FlashCard {
         return this.isRevealed;
     }
 
-    //@@author Song-Mengfei
     private boolean isValidWord(OriginalWord word, TranslatedWord translate) {
         return !word.getWord().equalsIgnoreCase(translate.getWord());
+    }
+
+    /**
+     * Returns the tags set for this FlashCard
+     * @return tags set for this flashCard
+     */
+    public Set<Tag> getTags() {
+        return Collections.unmodifiableSet(tags);
+    }
+
+    /**
+     * Sets the tags for this object by adding all elements from the provided set.
+     * If there are existing tags, the new tags will be added to the current set.
+     * This method allows for dynamically updating the tag set associated with this object.
+     * @param tags A Set of Tag objects to be added. It should not be null.
+     *             If the set is empty, no tags will be added.
+     *             If there are duplicate tags between the existing set and the provided set,
+     *             each tag will only be stored once due to the Set nature.
+     *
+     */
+    public void setTags(Set<Tag> tags) {
+        this.tags.addAll(tags);
+    }
+
+    /**
+     * Replaces the passed original tag with the replaced Tag
+     * @param originalTag Tag to be replaced
+     * @param replacedTag Tag t be replaced with
+     */
+    public void replaceTags(Tag originalTag, Tag replacedTag) {
+        this.tags.remove(originalTag);
+        this.tags.add(replacedTag);
     }
     /**
      * Edits the flashCard
@@ -99,7 +156,9 @@ public class FlashCard {
         TranslatedWord translatedWord = this.translatedWord.editWord(changes[2], changes[3]);
         return new FlashCard(originalWord, translatedWord, whenToReview, currentLevel);
     }
-
+    public void deleteTag(Tag toBeDeletedTag) {
+        this.tags.remove(toBeDeletedTag);
+    }
     /**
      * Returns true if both flashcards have the same originalWord and translatedWord.
      * This defines a weaker notion of equality between two flashcards.
@@ -127,8 +186,15 @@ public class FlashCard {
     /**
      * Sets this FlashCard as remembered
      */
+   //@@D-Limiter
     public void recallFlashCard() {
         this.isRemembered = true;
+    }
+    /**
+     * Evaluates and returns if this FlashCard is remembered
+     */
+    public boolean isRecalled() {
+        return this.isRemembered;
     }
 
     /**
@@ -136,13 +202,6 @@ public class FlashCard {
      */
     public void forgetFlashCard() {
         this.isRemembered = false;
-    }
-
-    /**
-     * Evaluates and returns if this FlashCard is remembered
-     */
-    public boolean isRecalled() {
-        return this.isRemembered;
     }
 
     /**

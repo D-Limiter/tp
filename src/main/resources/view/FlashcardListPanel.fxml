@@ -3,6 +3,8 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.layout.StackPane?>
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+  <StackPane fx:id="pieChartContainer" VBox.vgrow="NEVER" />
   <ListView fx:id="flashcardListView" VBox.vgrow="ALWAYS" />
 </VBox>

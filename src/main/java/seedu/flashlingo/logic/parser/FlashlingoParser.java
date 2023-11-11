@@ -10,24 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.flashlingo.commons.core.LogsCenter;
-import seedu.flashlingo.logic.commands.AddCommand;
-import seedu.flashlingo.logic.commands.Command;
-import seedu.flashlingo.logic.commands.DeleteCommand;
-import seedu.flashlingo.logic.commands.EditCommand;
-import seedu.flashlingo.logic.commands.EndCommand;
-import seedu.flashlingo.logic.commands.ExitCommand;
-import seedu.flashlingo.logic.commands.FindCommand;
-import seedu.flashlingo.logic.commands.HelpCommand;
-import seedu.flashlingo.logic.commands.LanguageCommand;
-import seedu.flashlingo.logic.commands.ListCommand;
-import seedu.flashlingo.logic.commands.LoadCommand;
-import seedu.flashlingo.logic.commands.NoCommand;
-import seedu.flashlingo.logic.commands.RevealCommand;
-import seedu.flashlingo.logic.commands.ReviewCommand;
-import seedu.flashlingo.logic.commands.StartCommand;
-import seedu.flashlingo.logic.commands.StatsCommand;
-import seedu.flashlingo.logic.commands.SwitchCommand;
-import seedu.flashlingo.logic.commands.YesCommand;
+import seedu.flashlingo.logic.commands.*;
 import seedu.flashlingo.logic.parser.exceptions.ParseException;
 import seedu.flashlingo.session.SessionManager;
 
@@ -85,43 +68,49 @@ public class FlashlingoParser {
             }
         }
         switch (commandWord) {
-        case AddCommand.COMMAND_WORD:
-            return new AddCommandParser().parse(arguments);
-        case DeleteCommand.COMMAND_WORD:
-            return new DeleteCommandParser().parse(arguments);
-        case EditCommand.COMMAND_WORD:
-            return new EditCommandParser().parse(arguments);
-        case FindCommand.COMMAND_WORD:
-            return new FindCommandParser().parse(arguments);
-        case NoCommand.COMMAND_WORD:
-            throw new ParseException(MESSAGE_NOT_IN_REVIEW_SESSION);
-        case LanguageCommand.COMMAND_WORD:
-            return new LanguageCommandParser().parse(arguments);
-        case YesCommand.COMMAND_WORD:
-            throw new ParseException(MESSAGE_NOT_IN_REVIEW_SESSION);
-        case ExitCommand.COMMAND_WORD:
-            return new ExitCommand();
-        case HelpCommand.COMMAND_WORD:
-            return new HelpCommand();
-        case ListCommand.COMMAND_WORD:
-            return new ListCommand();
-        case ReviewCommand.COMMAND_WORD:
-            return new ReviewCommand();
-        case StatsCommand.COMMAND_WORD:
-            return new StatsCommand();
-        case StartCommand.COMMAND_WORD:
-            return new StartCommand();
-        case EndCommand.COMMAND_WORD:
-            throw new ParseException(MESSAGE_NOT_IN_REVIEW_SESSION);
-        case SwitchCommand.COMMAND_WORD:
-            return new SwitchCommand();
-        case RevealCommand.COMMAND_WORD:
-            return new RevealCommandParser().parse(arguments);
-        case LoadCommand.COMMAND_WORD:
-            return new LoadCommandParser().parse(arguments);
-        default:
-            logger.finer("This user input caused a ParseException: " + userInput);
-            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+            case AddTagCommand.COMMAND_WORD:
+                return new AddTagCommandParser().parse(arguments);
+            case EditTagCommand.COMMAND_WORD:
+                return new EditTagCommandParser().parse(arguments);
+            case DeleteTagCommand.COMMAND_WORD:
+                return new DeleteTagCommandParser().parse(arguments);
+            case AddCommand.COMMAND_WORD:
+                return new AddCommandParser().parse(arguments);
+            case DeleteCommand.COMMAND_WORD:
+                return new DeleteCommandParser().parse(arguments);
+            case EditCommand.COMMAND_WORD:
+                return new EditCommandParser().parse(arguments);
+            case FindCommand.COMMAND_WORD:
+                return new FindCommandParser().parse(arguments);
+            case NoCommand.COMMAND_WORD:
+                throw new ParseException(MESSAGE_NOT_IN_REVIEW_SESSION);
+            case LanguageCommand.COMMAND_WORD:
+                return new LanguageCommandParser().parse(arguments);
+            case YesCommand.COMMAND_WORD:
+                throw new ParseException(MESSAGE_NOT_IN_REVIEW_SESSION);
+            case ExitCommand.COMMAND_WORD:
+                return new ExitCommand();
+            case HelpCommand.COMMAND_WORD:
+                return new HelpCommand();
+            case ListCommand.COMMAND_WORD:
+                return new ListCommand();
+            case ReviewCommand.COMMAND_WORD:
+                return new ReviewCommand();
+            case StatsCommand.COMMAND_WORD:
+                return new StatsCommand();
+            case StartCommand.COMMAND_WORD:
+                return new StartCommand();
+            case EndCommand.COMMAND_WORD:
+                throw new ParseException(MESSAGE_NOT_IN_REVIEW_SESSION);
+            case SwitchCommand.COMMAND_WORD:
+                return new SwitchCommand();
+            case RevealCommand.COMMAND_WORD:
+                return new RevealCommandParser().parse(arguments);
+            case LoadCommand.COMMAND_WORD:
+                return new LoadCommandParser().parse(arguments);
+            default:
+                logger.finer("This user input caused a ParseException: " + userInput);
+                throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
     }
 }

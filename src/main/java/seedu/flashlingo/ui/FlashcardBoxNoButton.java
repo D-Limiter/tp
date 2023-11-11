@@ -4,8 +4,12 @@ package seedu.flashlingo.ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+
+import java.util.Comparator;
+
 import seedu.flashlingo.logic.commands.exceptions.CommandException;
 import seedu.flashlingo.logic.parser.exceptions.ParseException;
 import seedu.flashlingo.model.flashcard.FlashCard;
@@ -49,6 +53,8 @@ public class FlashcardBoxNoButton extends UiPart<Region> {
 
     private MainWindow mw;
     private int index;
+    @FXML
+    private FlowPane tags;
 
     /**
      * Creates a {@code FlashCard code} with the given {@code FlashCard} and index to display.
@@ -71,6 +77,9 @@ public class FlashcardBoxNoButton extends UiPart<Region> {
             reveal.setText("Reveal");
         }
         level.setText("Current Level: " + fc.getProficiencyLevel().toString());
+        fc.getTags().stream()
+                .sorted(Comparator.comparing(tag -> tag.tagName))
+                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
     /**

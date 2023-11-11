@@ -21,6 +21,8 @@ public class CommandResult {
 
     /** The application should switch theme. */
     private final boolean switchTheme;
+    private boolean isStats;
+    private double successRate;
 
     /**
      * Constructs a {@code CommandResult} with the specified fields.
@@ -30,6 +32,20 @@ public class CommandResult {
         this.showHelp = showHelp;
         this.exit = exit;
         this.switchTheme = switchTheme;
+        this.isStats = false;
+        successRate = 0;
+    }
+    /**
+     * Constructs a {@code CommandResult} with the specified fields.
+     */
+    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit, boolean switchTheme,
+                         double successRate) {
+        this.feedbackToUser = requireNonNull(feedbackToUser);
+        this.showHelp = showHelp;
+        this.exit = exit;
+        this.switchTheme = switchTheme;
+        this.isStats = true;
+        this.successRate = successRate;
     }
 
     /**
@@ -46,6 +62,9 @@ public class CommandResult {
      */
     public String getFeedbackToUser() {
         return feedbackToUser;
+    }
+    public double getSuccessRate() {
+        return this.successRate;
     }
 
     /**
@@ -70,6 +89,10 @@ public class CommandResult {
      */
     public boolean isSwitchTheme() {
         return switchTheme;
+    }
+
+    public boolean isStatsResult() {
+        return this.isStats;
     }
 
     @Override

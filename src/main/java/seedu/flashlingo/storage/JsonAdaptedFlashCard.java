@@ -6,7 +6,8 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,6 +17,7 @@ import seedu.flashlingo.model.flashcard.FlashCard;
 import seedu.flashlingo.model.flashcard.ProficiencyLevel;
 import seedu.flashlingo.model.flashcard.words.OriginalWord;
 import seedu.flashlingo.model.flashcard.words.TranslatedWord;
+import seedu.flashlingo.model.tag.Tag;
 
 /**
  * Jackson-friendly version of {@link FlashCard}.
@@ -30,6 +32,8 @@ public class JsonAdaptedFlashCard {
     private final String translatedWordLanguage;
     private final String whenToReview;
     private final int level;
+    private final boolean isRemembered;
+    private final List<JsonAdaptedTag> tags = new ArrayList<>();
     /**
      * Constructs a {@code JsonAdaptedFlashCard} with the given flash card details.
      */
@@ -39,13 +43,19 @@ public class JsonAdaptedFlashCard {
                                 @JsonProperty("translatedWord") String translatedWord,
                                 @JsonProperty("translatedWordLanguage") String translatedWordLanguage,
                                 @JsonProperty("whenToReview") String whenToReview,
-                                @JsonProperty("level") int level) {
+                                @JsonProperty("level") int level,
+                                @JsonProperty("isRemembered") boolean isRemembered,
+                                @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.originalWord = originalWord;
         this.originalWordLanguage = originalWordLanguage;
         this.translatedWord = translatedWord;
         this.translatedWordLanguage = translatedWordLanguage;
         this.whenToReview = whenToReview;
+        this.isRemembered = isRemembered;
         this.level = level;
+        if (tags != null) {
+            this.tags.addAll(tags);
+        }
     }
 
     /**
@@ -57,7 +67,10 @@ public class JsonAdaptedFlashCard {
         translatedWord = source.getTranslatedWord().getWord();
         translatedWordLanguage = source.getTranslatedWord().getLanguage();
         level = source.getProficiencyLevel().getLevel();
-
+        isRemembered = source.isRecalled();
+        tags.addAll(source.getTags().stream()
+                .map(JsonAdaptedTag::new)
+                .collect(Collectors.toList()));
         Date whenToReview = source.getWhenToReview();
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(whenToReview.toInstant(), ZoneOffset.UTC);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
@@ -71,6 +84,10 @@ public class JsonAdaptedFlashCard {
      * @throws IllegalValueException if there were any data constraints violated in the adapted flash card.
      */
     public FlashCard toModelType() throws IllegalValueException {
+        final List<Tag> flashCardTags = new ArrayList<>();
+        for (JsonAdaptedTag tag : tags) {
+            flashCardTags.add(tag.toModelType());
+        }
         if (originalWord == null || originalWordLanguage == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
               OriginalWord.class.getSimpleName()));
@@ -107,9 +124,9 @@ public class JsonAdaptedFlashCard {
             throw new IllegalValueException(ProficiencyLevel.MESSAGE_CONSTRAINTS);
         }
         final int modelLevel = level;
-
+        final Set<Tag> modelTags = new HashSet<>(flashCardTags);
         return new FlashCard(new OriginalWord(modelOriginalWord, modelOriginalWordLanguage),
             new TranslatedWord(modelTranslatedWord, modelTranslatedWordLanguage),
-          modelWhenToReview, new ProficiencyLevel(modelLevel));
+          modelWhenToReview, new ProficiencyLevel(modelLevel), isRemembered, modelTags);
     }
 }

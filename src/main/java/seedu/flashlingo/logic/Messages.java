@@ -29,6 +29,7 @@ public class Messages {
     public static final String MESSAGE_OPEN_FILE_FAIL = "File not found or accessible.";
     public static final String MESSAGE_READ_FILE_FAIL = "File cannot be read due to invalid content or format.";
     public static final String MESSAGE_SAME_WORD = "Word and translation should be different.";
+    public static final String MESSAGE_EMPTY_TAGS = "Input tags should not be empty";
 
     /**
      * Returns an error message indicating the duplicate prefixes.

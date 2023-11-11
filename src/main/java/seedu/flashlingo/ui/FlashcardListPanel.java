@@ -5,9 +5,11 @@ import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import seedu.flashlingo.commons.core.LogsCenter;
 import seedu.flashlingo.model.flashcard.FlashCard;
 import seedu.flashlingo.session.SessionManager;
@@ -21,6 +23,8 @@ public class FlashcardListPanel extends UiPart<Region> {
 
     @FXML
     private ListView<FlashCard> flashcardListView;
+    @FXML
+    private StackPane pieChartContainer;
     private MainWindow mw;
 
     /**
@@ -32,7 +36,13 @@ public class FlashcardListPanel extends UiPart<Region> {
         flashcardListView.setItems(flashcardList);
         flashcardListView.setCellFactory(listView -> new FlashCardListViewCell());
     }
-
+    public void displayPieChart(PieChart pieChart) {
+        pieChartContainer.getChildren().clear();
+        pieChartContainer.getChildren().add(pieChart);
+    }
+    public void hidePieChart() {
+        pieChartContainer.getChildren().clear();
+    }
     public void update() {
         flashcardListView.setCellFactory(listView -> new FlashCardListViewCell());
     }

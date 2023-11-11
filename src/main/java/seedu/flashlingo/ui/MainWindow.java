@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
@@ -145,6 +146,19 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    private PieChart createPieChart(double successRate) {
+        PieChart.Data successData = new PieChart.Data("Words Remembered", successRate);
+        PieChart.Data failureData = new PieChart.Data("Words to be worked on", 100 - successRate);
+
+        PieChart pieChart = new PieChart();
+        pieChart.getData().addAll(successData, failureData);
+
+        return pieChart;
+    }
+    private void handleStats(CommandResult statsCommandResult) {
+        PieChart pieChart = createPieChart(statsCommandResult.getSuccessRate());
+        flashcardListPanel.displayPieChart(pieChart);
+    }
     /**
      * Attempts to open the UserGuide in the default browser.
      * Upon failure, pop up a HelpWindow with the URL shown, or focuses on it if it is already open
@@ -194,8 +208,13 @@ public class MainWindow extends UiPart<Stage> {
      */
     public CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {
+            flashcardListPanel.hidePieChart();
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
+
+            if (commandResult.isStatsResult()) {
+                handleStats(commandResult);
+            }
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
