@@ -24,9 +24,9 @@ public class DeleteTagCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Deletes the specified tag of the "
             + "specified flash card.\n"
             + "Parameters: "
-            + PREFIX_TAG + "TAG \n"
+            + PREFIX_TAG + "TAG\n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_TAG + "Mastered ";
+            + PREFIX_TAG + "Rare";
     public static final String MESSAGE_DELETE_TAGS_SUCCESS = "Tag deleted for: %1$s";
     private final Index index;
     private Tag toBeDeletedTag;

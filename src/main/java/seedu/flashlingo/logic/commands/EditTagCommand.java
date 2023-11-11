@@ -25,8 +25,8 @@ public class EditTagCommand extends Command {
             + PREFIX_ORIGINAL_TAG + "TAG "
             + PREFIX_REPLACED_TAG + "REPLACED_TAG \n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_ORIGINAL_TAG + "Mastered "
-            + PREFIX_REPLACED_TAG + "Novice ";
+            + PREFIX_ORIGINAL_TAG + "Essentials"
+            + PREFIX_REPLACED_TAG + "Uncommon";
     public static final String MESSAGE_EDIT_TAGS_SUCCESS = "Tags edited for: %1$s";
     private final Index index;
     private Tag originalTag;

@@ -30,7 +30,7 @@ public class AddTagCommand extends Command {
             + "Parameters: "
             + PREFIX_TAG + "TAG \n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_TAG + "Mastered ";
+            + PREFIX_TAG + "Essentials";
     public static final String MESSAGE_ADD_TAGS_SUCCESS = "Tags added to: %1$s";
     /** Index of the flash card to be edited **/
     private final Index index;
